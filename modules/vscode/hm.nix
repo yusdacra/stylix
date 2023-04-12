@@ -26,14 +26,16 @@ let
     };
   });
 
-  themeExtension = pkgs.runCommandLocal "stylix-vscode" {
+  themeExtension = let
     vscodeExtUniqueId = "Stylix.stylix";
     vscodeExtPublisher = "Stylix";
     version = "0.0.0";
+  in pkgs.runCommandLocal "stylix-vscode" {
+    inherit vscodeExtUniqueId vscodeExtPublisher version;
   } ''
-    mkdir -p $out/share/vscode/extensions/stylix/themes
-    ln -s ${themePackageJson} $out/share/vscode/extensions/stylix/package.json
-    ln -s ${themeFile} $out/share/vscode/extensions/stylix/themes/stylix.json
+    mkdir -p $out/share/vscode/extensions/${vscodeExtUniqueId}/themes
+    ln -s ${themePackageJson} $out/share/vscode/extensions/${vscodeExtUniqueId}/package.json
+    ln -s ${themeFile} $out/share/vscode/extensions/${vscodeExtUniqueId}/themes/stylix.json
   '';
 
 in {
